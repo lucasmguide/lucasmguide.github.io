@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucas de Moraes Guide — Human Geographer</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --text: #1a1a1a; --text-secondary: #666; --bg: #fff; --bg-secondary: #f7f7f5;
+    --border: #e5e5e5; --accent: #185FA5; --accent-light: #E6F1FB; --accent-border: #B5D4F4;
+    --green-bg: #EAF3DE; --green-text: #3B6D11; --green-border: #C0DD97;
+    --amber-bg: #FAEEDA; --amber-text: #854F0B; --amber-border: #FAC775;
+    --radius: 8px; --radius-lg: 12px;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 16px; line-height: 1.6; color: var(--text); background: var(--bg);
+    max-width: 720px; margin: 0 auto; padding: 0 1.5rem 4rem;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  nav { display: flex; gap: 1.75rem; padding: 1.5rem 0 1rem; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; flex-wrap: wrap; }
+  nav a { font-size: 14px; color: var(--text-secondary); }
+  nav a:hover { color: var(--text); text-decoration: none; }
+  .site-header { margin-bottom: 2.5rem; }
+  .site-header h1 { font-size: 22px; font-weight: 500; margin-bottom: 4px; }
+  .site-header p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+  section { margin-bottom: 3rem; }
+  h2 { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  .about-grid { display: grid; grid-template-columns: 1fr 150px; gap: 2rem; align-items: start; }
+  .about-text p { font-size: 15px; line-height: 1.75; margin-bottom: 0.9rem; }
+  .about-text p:last-child { margin-bottom: 0; }
+  .avatar { width: 100%; aspect-ratio: 1; border-radius: var(--radius-lg); background: var(--bg-secondary); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 500; color: var(--text-secondary); }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+  .tag { font-size: 12px; padding: 3px 10px; border-radius: 20px; background: var(--bg-secondary); color: var(--text-secondary); border: 1px solid var(--border); }
+  .links-row { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-top: 1rem; }
+  .links-row a { font-size: 13px; color: var(--text-secondary); }
+  .links-row a:hover { color: var(--text); text-decoration: none; }
+  .pub-item { padding: 1rem 0; border-bottom: 1px solid var(--border); }
+  .pub-item:first-child { border-top: 1px solid var(--border); }
+  .pub-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; flex-wrap: wrap; }
+  .pub-year { font-size: 12px; color: var(--text-secondary); font-weight: 500; min-width: 32px; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; border: 1px solid; }
+  .badge.article { background: var(--accent-light); color: #185FA5; border-color: var(--accent-border); }
+  .badge.forth { background: var(--amber-bg); color: var(--amber-text); border-color: var(--amber-border); }
+  .badge.chapter { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
+  .badge.essay { background: var(--bg-secondary); color: var(--text-secondary); border-color: var(--border); }
+  .pub-title { font-size: 15px; font-weight: 500; margin-bottom: 3px; line-height: 1.4; }
+  .pub-authors { font-size: 13px; color: var(--text-secondary); margin-bottom: 2px; }
+  .pub-venue { font-size: 13px; color: var(--text-secondary); font-style: italic; }
+  .edu-item { display: grid; grid-template-columns: 88px 1fr; gap: 1rem; padding: 0.875rem 0; border-bottom: 1px solid var(--border); }
+  .edu-item:first-child { border-top: 1px solid var(--border); }
+  .edu-years { font-size: 13px; color: var(--text-secondary); padding-top: 2px; }
+  .edu-body h3 { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+  .edu-body .inst { font-size: 13px; color: var(--text-secondary); margin-bottom: 2px; }
+  .edu-body .thesis { font-size: 13px; color: var(--text-secondary); font-style: italic; }
+  .proj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+  .proj-card { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.25rem; }
+  .proj-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-secondary); margin-bottom: 8px; }
+  .proj-card h3 { font-size: 15px; font-weight: 500; margin-bottom: 6px; line-height: 1.35; }
+  .proj-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .cv-row { display: flex; align-items: center; justify-content: space-between; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius); }
+  .cv-row span { font-size: 14px; color: var(--text-secondary); }
+  .cv-row a { font-size: 13px; padding: 5px 14px; border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); }
+  .cv-row a:hover { background: var(--bg-secondary); text-decoration: none; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .contact-item { padding: 0.875rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); }
+  .contact-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-secondary); margin-bottom: 4px; font-weight: 500; }
+  .contact-value { font-size: 14px; }
+  @media (max-width: 560px) {
+    .about-grid, .contact-grid, .proj-grid { grid-template-columns: 1fr; }
+    .edu-item { grid-template-columns: 1fr; gap: 2px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#about">About</a>
+  <a href="#publications">Publications</a>
+  <a href="#education">Education</a>
+  <a href="#research">Research</a>
+  <a href="#cv">CV</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<div class="site-header">
+  <h1>Lucas de Moraes Guide</h1>
+  <p>Human Geographer &middot; PhD candidate, University of Campinas (Unicamp)<br>
+  Platform economies &middot; Urban geography &middot; Financialization &middot; Labor &middot; Global South</p>
+</div>
+
+<section id="about">
+  <h2>About</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I am a human geographer specializing in the critical political economy of digital platforms, with a focus on the socio-spatial inequalities produced by platform logistics in the Global South. My work examines how algorithmic management reshapes labor relations and territorial dynamics, combining qualitative methods &mdash; including interviews and participant observation with platform workers &mdash; with spatial data analysis.</p>
+      <p>Drawing on urban theory and critical political economy, I investigate how platform companies reconfigure the circuits of the urban economy, generating new forms of precarity that cut across class, race, gender, and migration status. I contribute to debates on workers&rsquo; rights, epistemic justice, and the regulation of platform capitalism, with comparative research experience in Brazil and Europe.</p>
+      <p>I am currently a visiting researcher at the University of Bologna (2024&ndash;2025), funded by a CAPES/PDSE scholarship, and a PhD candidate at the Institute of Geosciences, Unicamp, under the supervision of Prof. Dr. Ricardo Abid Castillo.</p>
+      <div class="tags">
+        <span class="tag">Platform capitalism</span>
+        <span class="tag">Financialization</span>
+        <span class="tag">Urban informality</span>
+        <span class="tag">Food delivery</span>
+        <span class="tag">Labor geography</span>
+        <span class="tag">Global South</span>
+        <span class="tag">Algorithmic management</span>
+        <span class="tag">Brazilian territory</span>
+      </div>
+      <div class="links-row">
+        <a href="https://orcid.org/0009-0007-1066-2066" target="_blank">ORCID &#8599;</a>
+        <a href="https://scholar.google.com/citations?user=YsbteZUAAAAJ&hl=pt-BR" target="_blank">Google Scholar &#8599;</a>
+        <a href="mailto:lucas_guide@hotmail.com">lucas_guide@hotmail.com</a>
+      </div>
+    </div>
+    <div class="avatar">LG</div>
+  </div>
+</section>
+
+<section id="publications">
+  <h2>Publications</h2>
+
+  <div class="pub-item">
+    <div class="pub-meta"><span class="pub-year">2026</span><span class="badge forth">Forthcoming</span><span class="badge chapter">Book chapter</span></div>
+    <div class="pub-title">From delivery to fintech: the financialization of the territory and the data-driven power of iFood in Brazil</div>
+    <div class="pub-authors">Guide, L. M.; Seixas, L.</div>
+    <div class="pub-venue">Tech/Money Collected Volume</div>
+  </div>
+
+  <div class="pub-item">
+    <div class="pub-meta"><span class="pub-year">2026</span><span class="badge forth">Forthcoming</span><span class="badge article">Journal article</span></div>
+    <div class="pub-title">Peripheral urbanization and logistic network effect: the territorial strategies of delivery platforms in Brazilian metropolises</div>
+    <div class="pub-authors">Guide, L. M.; Castillo, R.</div>
+    <div class="pub-venue">International Journal of Urban Sustainable Development</div>
+  </div>
+
+  <div class="pub-item">
+    <div class="pub-meta"><span class="pub-year">2026</span><span class="badge forth">Forthcoming</span><span class="badge article">Journal article</span></div>
+    <div class="pub-title">Platformisation of the book trade in Brazil and the centrality of logistics in the relations between agents of the upper and lower circuits of the urban economy</div>
+    <div class="pub-authors">Guide, L. M.; Castillo, R.</div>
+    <div class="pub-venue">Journal Entre-Lugar</div>
+  </div>
+
+  <div class="pub-item">
+    <div class="pub-meta"><span class="pub-year">2025</span><span class="badge article">Journal article</span></div>
+    <div class="pub-title">Use and regulation of Brazilian territory in platform capitalism: technical-financial subordination of the popular economy and the production of new social inequalities</div>
+    <div class="pub-authors">Guide, L. M.; Busca, M. D.</div>
+    <div class="pub-venue">Inequalities, v. 2, p. 1</div>
+  </div>
+
+  <div class="pub-item">
+    <div class="pub-meta"><span class="pub-year">2025</span><span class="badge article">Journal article</span></div>
+    <div class="pub-title">La territorialisation conflictuelle de l&rsquo;&eacute;conomie de plateforme. Une enqu&ecirc;te &agrave; partir de la &laquo;&nbsp;plateformisation&nbsp;&raquo; de la livraison de repas dans les villes de S&atilde;o Paulo et Bologne</div>
+    <div class="pub-authors">Guide, L. M.; Pirina, G.</div>
+    <div class="pub-venue">Br&eacute;sil(s) &mdash; Sciences Humaines et Sociales, v. 28, p. 1</div>
+  </div>
+
+  <div class="pub-item">
+    <div class="pub-meta"><span class="pub-year">2025</span><span class="badge chapter">Book chapter</span></div>
+    <div class="pub-title">Logistics and socially necessary circulation: food acquisition and school feeding programmes in Brazil</div>
+    <div class="pub-authors">Castillo, R.; Lopes, H. S. M.; Guide, L. M.</div>
+    <div class="pub-venue">In: Brazilian territory: contributions from Milton Santos&rsquo; work to understanding the informational period. S&atilde;o Paulo: Consequ&ecirc;ncia</div>
+  </div>
+
+  <div class="pub-item">
+    <div class="pub-meta"><span class="pub-year">2024</span><span class="badge chapter">Book chapter</span></div>
+    <div class="pub-title">Digital platforms and app-based delivery: implications of the outsourcing of ready-meal deliveries</div>
+    <div class="pub-authors">Guide, L. M.; Castillo, R.</div>
+    <div class="pub-venue">In: F&aacute;bio Tozi (Ed.), Digital platforms and new socio-spatial inequalities. S&atilde;o Paulo: Max Limonad Publishing</div>
+  </div>
+
+  <div class="pub-item">
+    <div class="pub-meta"><span class="pub-year">2024</span><span class="badge essay">Essay</span></div>
+    <div class="pub-title">Why isn&rsquo;t there a globally hegemonic platform in the food delivery sector?</div>
+    <div class="pub-authors">Guide, L. M.</div>
+    <div class="pub-venue">Online essay</div>
+  </div>
+
+  <div class="pub-item">
+    <div class="pub-meta"><span class="pub-year">2023</span><span class="badge essay">Essay</span></div>
+    <div class="pub-title">Brief contribution of Brazilian critical geography to platform logistics</div>
+    <div class="pub-authors">Guide, L. M.</div>
+    <div class="pub-venue">Online essay</div>
+  </div>
+
+</section>
+
+<section id="education">
+  <h2>Education</h2>
+
+  <div class="edu-item">
+    <div class="edu-years">2021&ndash;2026</div>
+    <div class="edu-body">
+      <h3>PhD in Geography</h3>
+      <div class="inst">University of Campinas (Unicamp), Brazil</div>
+      <div class="thesis">Thesis: Platform logistics and the use of territory: app-mediated food delivery and the new linkages between the circuits of the urban economy in Campinas, S&atilde;o Paulo<br>Supervisor: Prof. Dr. Ricardo Abid Castillo</div>
+    </div>
+  </div>
+
+  <div class="edu-item">
+    <div class="edu-years">2024&ndash;2025</div>
+    <div class="edu-body">
+      <h3>Visiting PhD Researcher &mdash; Sandwich PhD (PDSE/CAPES)</h3>
+      <div class="inst">University of Bologna, Italy</div>
+      <div class="thesis">Critical logistics, territorialisation of platform economies, comparative urban analysis (Brazil&ndash;Europe). Host supervisor: Prof. Dr. Maur&iacute;lio Pirone</div>
+    </div>
+  </div>
+
+  <div class="edu-item">
+    <div class="edu-years">2016&ndash;2018</div>
+    <div class="edu-body">
+      <h3>MSc in Geography</h3>
+      <div class="inst">University of Campinas (Unicamp), Brazil</div>
+      <div class="thesis">Thesis: Institutional markets for family farming: implications of the Food Acquisition Program (PAA) for the spatial production circuit of milk in Brazil</div>
+    </div>
+  </div>
+
+  <div class="edu-item">
+    <div class="edu-years">2010&ndash;2015</div>
+    <div class="edu-body">
+      <h3>BA in Geography / Teaching Degree (Licenciatura)</h3>
+      <div class="inst">University of Campinas (Unicamp), Brazil</div>
+    </div>
+  </div>
+
+</section>
+
+<section id="research">
+  <h2>Research projects</h2>
+  <div class="proj-grid">
+
+    <div class="proj-card">
+      <div class="proj-label">Ongoing &middot; 2024&ndash;2026</div>
+      <h3>Data-driven financialization of food delivery platforms</h3>
+      <p>How iFood leveraged years of transactional data to build a financial arm targeting small restaurants excluded from formal credit markets &mdash; and the regulatory blind spots this creates.</p>
+      <div class="tags" style="margin-top:0.75rem">
+        <span class="tag">iFood Pago</span><span class="tag">Embedded finance</span><span class="tag">Antitrust</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-label">Ongoing &middot; 2024&ndash;2025</div>
+      <h3>Comparative platform urbanism: S&atilde;o Paulo and Bologna</h3>
+      <p>Cross-continental fieldwork on how food delivery platforms territorialize urban space differently in a Brazilian metropolis and a European mid-size city, with focus on algorithmic labor dispatch.</p>
+      <div class="tags" style="margin-top:0.75rem">
+        <span class="tag">Comparative urbanism</span><span class="tag">Bologna</span><span class="tag">S&atilde;o Paulo</span>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-label">Completed &middot; 2021&ndash;2024</div>
+      <h3>Platform logistics and urban circuits in Campinas&ndash;SP</h3>
+      <p>PhD research mapping logistical network effects of delivery platforms in Brazil&rsquo;s third-largest metro area, connecting Milton Santos&rsquo;s dual-circuit urban theory to contemporary platform operations.</p>
+      <div class="tags" style="margin-top:0.75rem">
+        <span class="tag">Urban circuits</span><span class="tag">Campinas</span><span class="tag">GIS</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="cv">
+  <h2>CV</h2>
+  <div class="cv-row">
+    <span>Full curriculum vitae &mdash; last updated 2026</span>
+    <a href="cv.pdf">Download PDF &darr;</a>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <div class="contact-grid">
+    <div class="contact-item">
+      <div class="contact-label">Email</div>
+      <div class="contact-value"><a href="mailto:lucas_guide@hotmail.com">lucas_guide@hotmail.com</a></div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-label">Institution</div>
+      <div class="contact-value">Unicamp &mdash; Institute of Geosciences, Campinas, Brazil</div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-label">Google Scholar</div>
+      <div class="contact-value"><a href="https://scholar.google.com/citations?user=YsbteZUAAAAJ&hl=pt-BR" target="_blank">View profile &#8599;</a></div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-label">ORCID</div>
+      <div class="contact-value"><a href="https://orcid.org/0009-0007-1066-2066" target="_blank">0009-0007-1066-2066 &#8599;</a></div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
